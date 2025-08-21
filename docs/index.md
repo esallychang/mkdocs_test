@@ -2,12 +2,17 @@
 
 For full documentation visit [mkdocs.org](https://www.mkdocs.org).
 
+## Testing subpages
+Please check out the [test page](01-Week2-Loading-SRA-Data.md) for further details.
+
 ## Commands
 
 * `mkdocs new [dir-name]` - Create a new project.
 * `mkdocs serve` - Start the live-reloading docs server.
 * `mkdocs build` - Build the documentation site.
 * `mkdocs -h` - Print help message and exit.
+
+
 
 ## Project layout
 
