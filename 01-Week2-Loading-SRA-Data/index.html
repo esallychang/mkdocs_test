@@ -1,0 +1,792 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://esallychang.github.io/mkdocs_test/01-Week2-Loading-SRA-Data/">
+      
+      
+        <link rel="prev" href="..">
+      
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.17">
+    
+    
+      
+        <title>Hands-On: Loading Our Input Dataset Onto Galaxy - My Docs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.7e37652d.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#prerequisites" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="My Docs" class="md-header__button md-logo" aria-label="My Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            My Docs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Hands-On: Loading Our Input Dataset Onto Galaxy
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="My Docs" class="md-nav__button md-logo" aria-label="My Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    My Docs
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Welcome to MkDocs
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Hands-On: Loading Our Input Dataset Onto Galaxy
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Hands-On: Loading Our Input Dataset Onto Galaxy
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#obtaining-data-from-the-ncbi-short-read-archive" class="md-nav__link">
+    <span class="md-ellipsis">
+      Obtaining data from the NCBI Short Read Archive
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hands-on-get-metadata-from-ncbi-sra" class="md-nav__link">
+    <span class="md-ellipsis">
+      "Hands-On: Get Metadata from NCBI SRA"
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#getting-information-about-individual-samples" class="md-nav__link">
+    <span class="md-ellipsis">
+      Getting Information About Individual Samples
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#processing-and-filtering-metadata-on-galaxy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Processing and Filtering Metadata on Galaxy
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hands-on-upload-sraruninfocsv-onto-galaxy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hands-On: Upload SRARunInfo.csv onto Galaxy
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#solution" class="md-nav__link">
+    <span class="md-ellipsis">
+      Solution
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#warning-dont-get-caught-by-the-wrong-cut" class="md-nav__link">
+    <span class="md-ellipsis">
+      Warning: Don't get caught by the wrong "Cut"!
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hands-on-creating-a-subset-of-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hands-On: Creating a subset of data
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#downloading-the-actual-sequence-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      Downloading the actual sequence data
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hands-on-getting-data-from-sra" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hands-On: Getting data from SRA
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#solution_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Solution
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sra-upload-workaround-getting-data-from-a-galaxy-history" class="md-nav__link">
+    <span class="md-ellipsis">
+      SRA Upload Workaround: Getting data from a Galaxy History
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-does-our-paired-end-data-actually-look-like" class="md-nav__link">
+    <span class="md-ellipsis">
+      What does our paired-end data actually look like?
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#obtaining-data-from-the-ncbi-short-read-archive" class="md-nav__link">
+    <span class="md-ellipsis">
+      Obtaining data from the NCBI Short Read Archive
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hands-on-get-metadata-from-ncbi-sra" class="md-nav__link">
+    <span class="md-ellipsis">
+      "Hands-On: Get Metadata from NCBI SRA"
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#getting-information-about-individual-samples" class="md-nav__link">
+    <span class="md-ellipsis">
+      Getting Information About Individual Samples
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#processing-and-filtering-metadata-on-galaxy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Processing and Filtering Metadata on Galaxy
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hands-on-upload-sraruninfocsv-onto-galaxy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hands-On: Upload SRARunInfo.csv onto Galaxy
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#solution" class="md-nav__link">
+    <span class="md-ellipsis">
+      Solution
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#warning-dont-get-caught-by-the-wrong-cut" class="md-nav__link">
+    <span class="md-ellipsis">
+      Warning: Don't get caught by the wrong "Cut"!
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hands-on-creating-a-subset-of-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hands-On: Creating a subset of data
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#downloading-the-actual-sequence-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      Downloading the actual sequence data
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hands-on-getting-data-from-sra" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hands-On: Getting data from SRA
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#solution_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Solution
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sra-upload-workaround-getting-data-from-a-galaxy-history" class="md-nav__link">
+    <span class="md-ellipsis">
+      SRA Upload Workaround: Getting data from a Galaxy History
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-does-our-paired-end-data-actually-look-like" class="md-nav__link">
+    <span class="md-ellipsis">
+      What does our paired-end data actually look like?
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+  <h1>Hands-On: Loading Our Input Dataset Onto Galaxy</h1>
+
+<blockquote>
+<h2 id="prerequisites">Prerequisites</h2>
+<p>This tutorial assumes that you have done the following: 
+* Signed up for a Galaxy account and can log in.
+* Have taken a look at the Galaxy Environment 101 Tutorial and are familiar with the concepts therein. 
+* Have familiarized yourself with the steps of variant-calling and related file-formats (you can always do this as you progress through the tutorial as needed!). 
+{: .prereq}</p>
+</blockquote>
+<h2 id="obtaining-data-from-the-ncbi-short-read-archive">Obtaining data from the NCBI Short Read Archive</h2>
+<p>First we need to identify some samples of interest. The Sequence Read Archive (SRA) is the primary archive of unassembled reads operated by the US National Institutes of Health (NIH). SRA is a great place to get the sequencing data that underlie publications and studies. We know where to find the data because Science (and in fact, most publications) require authors to deposit their data in a public database and give us the information we need to find it on the database. </p>
+<p>The data availability statement can be found in the acknowledgements section of Lemieux et al. 2020: </p>
+<p><a href="{{ page.root }}/fig/Lemieux_Data_Statement.png">
+  <img src="{{ page.root }}/fig/Lemieux_Data_Statement.png" alt="Data availability statement from Lemieux et al. 2020" />
+</a></p>
+<p>As you can see, we now know we can find sequencing data related to this study under <code>BioProject PRJNA622837</code>. As defined by the NCBI, a BioProject is "a collection of biological data related to a single initiative, originating from a single organization or from a consortium", so they generally contain multiple sequencing data sets. The NCBI has much a much more <a href="https://www.ncbi.nlm.nih.gov/books/NBK169438/">in-depth description of BioProjects</a> on its webpage, but their general structure can be summarized below: </p>
+<p><img src="{{ page.root }}/fig/Bioproject_Structure.png" alt="Schematic of an NCBI BioProject"></p>
+<blockquote>
+<h2 id="hands-on-get-metadata-from-ncbi-sra">"Hands-On: Get Metadata from NCBI SRA"</h2>
+<ol>
+<li>Go to NCBI’s SRA page by pointing your browser to <code>https://www.ncbi.nlm.nih.gov/sra</code></li>
+<li>Perform a search using the Bioproject ID from the paper: <code>BioProject PRJNA622837</code>
+<img src="{{ page.root }}/fig/SRA_Bioproject_Search.png" alt="SRA search toolbar filled in with Bioproject ID from above"></li>
+<li>The web page will show a large number of available SRA datasets related to project described in Lemieux et al. 2020 (at the time of writing there were 22,173). </li>
+<li>Download metadata describing these datasets by:</li>
+<li>clicking on <strong>Send to</strong>: dropdown</li>
+<li>Selecting <code>File</code></li>
+<li>Changing <strong>Format</strong> to <code>RunInfo</code></li>
+<li>Clicking <strong>Create file</strong>. The screen should now look like this: 
+<img src="{{ page.root }}/fig/SRA_Download_RunInfo_Menu.png" alt="SRA Download RunInfo Menu Options"></li>
+<li>Click "Create File" to download the <code>SraRunInfo.csv</code> file to a place on your computer where you will be able to find it easily for the next step.
+{: .challenge}</li>
+</ol>
+</blockquote>
+<h2 id="getting-information-about-individual-samples">Getting Information About Individual Samples</h2>
+<p>So, what is in the the SRA Run Info file?</p>
+<p>The file we just downloaded is <strong>not</strong> sequencing data itself. Rather, it is <strong>metadata</strong> describing the properties of sequencing reads. We could actually open this file in a program like Excel, and if we did so, we could see columns of information like <strong>Release Date</strong>, <strong>Sequencing Platform</strong>, and <strong>Sample Name</strong> as reported by the researchers. In this study every accession corresponds to an individual patient whose samples were sequenced. We will filter this list down to just a few sequenced samples that will be used in the remainder of this tutorial. </p>
+<p>This is all very valuable information - for example, if we want to know more about the sample that became the SRA sequencing dataset <code>SRS8612691</code> we can use the <strong>Sample Name</strong> column to retrieve information about when the sample was actually collected. You can search for a <strong>Sample Name</strong> in the general NCBI database by using the <strong>All Databases</strong> option in the toolbar: </p>
+<p><img src="{{ page.root }}/fig/NCBI_Sample_SearchBar.png" alt="Searching NCBI By Sample Name"></p>
+<p>We can see that the sample that was sequenced to become the SRA sequencing dataset <code>SRS8612691</code> was collected on January 4th, 2021 and was collected as part of routine surveillance: </p>
+<p><img src="{{ page.root }}/fig/NCBI_SampleSearch_Results.png" alt="Results of Searching NCBI By A Sample Name"></p>
+<h2 id="processing-and-filtering-metadata-on-galaxy">Processing and Filtering Metadata on Galaxy</h2>
+<blockquote>
+<h2 id="hands-on-upload-sraruninfocsv-onto-galaxy">Hands-On: Upload <code>SRARunInfo.csv</code> onto Galaxy</h2>
+<ol>
+<li>If you haven't already, log in to your Galaxy account. Create a new, empty history called something like "Variant Calling Tutorial".</li>
+<li>In the tools panel, click the <strong>Upload Data</strong> button: </li>
+</ol>
+<p><img src="{{ page.root }}/fig/Galaxy_upload_button.png" alt="Galaxy upload button"></p>
+<ol>
+<li>Find <code>SRARunInfo.csv</code> on your computer, and drag it into the "Drop Files Here" space in the dialog box that pops up.</li>
+<li>Click the <strong>Start</strong> button to begin the upload. </li>
+<li>At this point, you can press the <strong>Close</strong> button. In a several seconds, <code>SRARunInfo.csv</code> should be ready to look at in the History panel. </li>
+<li>You can now look at the content of this file by clicking on the eye icon <span class="glyphicon glyphicon-eye-open"></span>. You will see that this file contains a lot of information about individual SRA accessions.</li>
+</ol>
+<p>How large is the sequencing file associated with the accession number <code>SRR14114810</code>? </p>
+<blockquote>
+<h2 id="solution">Solution</h2>
+<p>272 MB. If you open the file by clicking the eye icon, you should be able to find <code>SRR14114810</code> in the <strong>Run</strong> column, and then look over to see 272 in the <strong>size_MB</strong> column. </p>
+<p>{: .solution}
+<strong>Note:</strong> If you ever want a smaller summary of the data, you can also click the name of of item in your history, which should produce something like this: </p>
+</blockquote>
+<p><img src="{{ page.root }}/fig/Galaxy_Pencil_Summary.png" alt="Data summary produced by clicking the name of a data set in your in Galaxy History" height="300"></p>
+<p>{: .challenge}</p>
+</blockquote>
+<p>The Galaxy servers MIGHT powerful enough to process all 22,000+ datasets, but to make this tutorial bearable we need to selected a smaller, but still interesting, subset. In particular, we are interested in samples from early in the ongoing Covid-19 pandemic, so we will be choosing samples collected in April and May of 2020, which I have chosen using the "Collection Date" information retrieved by as described above. </p>
+<p><strong>We are going to focus on the following two sequencing data sets:</strong> 
+* Run Number <code>SRR12733957</code>: A sequencing run from a sample collected on April 6th, 2020.
+* Run Number <code>SRR11954102</code>: A sequencing run from a sample collected on May 2nd, 2020.</p>
+<blockquote>
+<h2 id="warning-dont-get-caught-by-the-wrong-cut">Warning: Don't get caught by the wrong "Cut"!</h2>
+<p><span class="glyphicon glyphicon-warning-sign"></span> WARNING: There are two cut tools in Galaxy due to historical reasons. For this tutorial we are assuming you are using the named EXACTLY <button type="button" class="btn btn-outline-tool" style="pointer-events: none"> Cut columns from a table (cut) </button>  The other tool follows a similar logic but with a different interface. <span class="glyphicon glyphicon-warning-sign"></span> </p>
+<p>{: .callout}</p>
+<h2 id="hands-on-creating-a-subset-of-data">Hands-On: Creating a subset of data</h2>
+<ol>
+<li>
+<p>Find the <button type="button" class="btn btn-outline-tool" style="pointer-events: none"> Select lines that match an expression  </button> tool in the <strong>Filter and Sort</strong> section of the tool panel. You may find that Galaxy has an overwhelming amount of tools installed. To find a specific tool type the tool name in the tool panel search box to find the tool.</p>
+</li>
+<li>
+<p>Make sure the SraRunInfo.csv dataset we just uploaded is listed in the <span class="glyphicon glyphicon-file"></span> <strong>Select lines from</strong> field of the tool form.</p>
+</li>
+<li>
+<p>In the <strong>Pattern</strong> field enter the following expression: <code>SRR12733957|SRR11954102</code>. The "&#124;" symbol (called a "pipe") means "or". So we are telling this tool to find lines containing <code>SRR12733957</code> OR <code>SRR11954102</code>.</p>
+</li>
+<li>Click the <code>Execute</code> button.</li>
+<li>Once the this has been executed, you should have a file with a total of three lines. If you look at the file (<span class="glyphicon glyphicon-eye-open"></span>), you will see that one of the two lines has been duplicated to take the place of the "header" line (which is fine for now). </li>
+<li>Cut the first column from the file using the <button type="button" class="btn btn-outline-tool" style="pointer-events: none"> Cut columns from a table (cut) </button>  tool, which you will find in <strong>Text Manipulation</strong> section of the tool pane. </li>
+<li>Make sure the dataset produced by the previous step is selected in the <strong>File to cut</strong> field of the tool form.</li>
+<li>Change <strong>Delimited by</strong> to <code>Comma</code>.</li>
+<li>In <strong>List of fields</strong> drop-down menu select <code>Column: 1</code>. This is telling the tool to only return the first column of our data.</li>
+<li>Hit <code>Execute</code>.  This will produce a text file with just two lines:
+~~~
+SRR12733957
+SRR11954102
+~~~
+{: .output}
+{: .challenge}</li>
+</ol>
+</blockquote>
+<h2 id="downloading-the-actual-sequence-data">Downloading the actual sequence data</h2>
+<p>So, now we have a file that contains just the two accession numbers for the sequencing data sets that we want. This is the perfect input for tools in Galaxy that can use this information to download big sequencing data sets straight from the NCBI SRA directly into your Galaxy environment without ever putting the big files on your computer. </p>
+<blockquote>
+<h2 id="hands-on-getting-data-from-sra">Hands-On: Getting data from SRA</h2>
+<ol>
+<li><button type="button" class="btn btn-outline-tool" style="pointer-events: none"> Faster Download and Extract Reads in FASTQ </button> with the following parameters: </li>
+<li><strong>Select Input Type</strong>: <code>List of SRA Accession, one per line</code>. </li>
+<li>The input parameter <span class="glyphicon glyphicon-file"></span> <strong>select input type</strong> should point the output of <button type="button" class="btn btn-outline-tool" style="pointer-events: none"> Cut columns from a table (cut) </button>. </li>
+<li>Click the <code>Execute</code> button. This will run the tool, which retrieves the sequence read read datasets and places them into your Galaxy environment. <span class="glyphicon glyphicon-time"></span> Note that this step can take a few minutes, so this might be a good time get get a fresh cup of coffee!</li>
+<li><span class="glyphicon glyphicon-eye-open"></span> Take a look at the entries that were created in your history panel: </li>
+<li><code>Pair-end data (fasterq-dump)</code>: Contains Paired-end datasets (if available)</li>
+<li><code>Single-end data (fasterq-dump)</code>:  Contains Single-end datasets (if available)</li>
+<li><code>Other data (fasterq-dump)</code>:  Contains Unpaired datasets (if available)</li>
+<li><code>fasterq-dump log</code>: Contains Information about the tool execution</li>
+</ol>
+<p>Is the data we downloaded <strong>single-end</strong> or <strong>paired-end</strong> data? </p>
+<blockquote>
+<h2 id="solution_1">Solution</h2>
+<p>Our data is <strong>paired-end</strong>! If you click each of the data files generated that are now in your history, you will see that <code>Single-end data (fasterq-dump)</code> is an empty list, meaning that the tool did not download any files of that type. On the other hand, <code>Pair-end data (fasterq-dump)</code> is a "list of pairs with 2 items", each of which is a FASTQ-formatted file if you look inside: 
+<img src="{{ page.root }}/fig/List_of_Pairs.png" alt="Preview of paired-end data downloaded by fasterq-dump tool"></p>
+<p>{: .solution}
+{: .challenge}</p>
+</blockquote>
+</blockquote>
+<p><code>Pair-end data (fasterq-dump)</code>, <code>Single-end data (fasterq-dump)</code> and <code>Other data (fasterq-dump)</code> are actually collections of datasets. Collections in Galaxy are logical groupings of datasets that reflect the semantic relationships between them in the experiment / analysis. In this case the tool creates separate collections for paired-end reads, single reads, and other (any other type of file). See the <a href="https://training.galaxyproject.org/training-material/topics/galaxy-interface/tutorials/collections/tutorial.html">Galaxy Collections tutorial</a> and watch <a href="https://www.youtube.com/playlist?list=PLNFLKDpdM3B9UaxWEXgziHXO3k-003FzE">Galaxy tutorial videos</a> (with names beginning with “Dataset Collections”) for more information.</p>
+<p>Explore the collections by first clicking on the collection name in the history panel. This takes you inside the collection and shows you the datasets in it. You can then navigate back to the outer level of your history.</p>
+<p>Once <code>fasterq</code> finishes transferring data (all boxes are green / done), we are ready to analyze it.</p>
+<blockquote>
+<h2 id="sra-upload-workaround-getting-data-from-a-galaxy-history">SRA Upload Workaround: Getting data from a Galaxy History</h2>
+<p><strong>When to use this tool</strong>: If you have waited for more than 12 hours for these FASTQ files to successfully load into your Galaxy history using the <button type="button" class="btn btn-outline-tool" style="pointer-events: none"> Faster Download and Extract Reads in FASTQ </button> tool , you can transfer these files from an existing history I set up for this week. </p>
+<ol>
+<li>Navigate to <code>https://usegalaxy.org/u/faes.biof521/h/biof521sp22week2tutorialfiles</code> (the URL will depend on the exact history you are trying to import). </li>
+<li>In the top right-hand corner, click the big <strong>"+"</strong> button for the option to import this history into your Galaxy account. 
+<img src="{{ page.root }}/fig/History_Import_TopCorner.png" alt="History Import Button in Top Corner" width="400" height="200"></li>
+<li>Once that is done (it should just take a few moments), Galaxy will automatically take you back to your home screen, with the imported history now active. </li>
+<li>Now you can go to the <code>View All Histories</code> option, and you should see this history side by side with your older histories. 
+<img src="{{ page.root }}/fig/ViewAllHistories.png" alt="The View All Histories Option on Galaxy"  width="400"></li>
+<li>Drag and drop only the files that you need (in this case, probably just the <code>paired-end</code> collection into the history you set up for this tutorial. </li>
+<li>Once you are done with that, make sure to click the <strong>Switch To</strong> tab above your Week 2 Tutorial history to make that one active before pressing the <strong>Home</strong> icon on the top bar to return to your usual Galaxy view.
+{: .solution}</li>
+</ol>
+</blockquote>
+<h2 id="what-does-our-paired-end-data-actually-look-like">What does our paired-end data actually look like?</h2>
+<p>It is common to prepare pair-end and mate-pair sequencing libraries. This is highly beneficial for a number of applications discussed, such as those discussed in Week 2's <strong>Genome Assembly</strong> module. For now let’s just briefly discuss what these are and how they manifest themselves in FASTQ form.</p>
+<p><img src="{{ page.root }}/fig/pairedend_matepair.png" alt="Diagram of paired-end and mate-pair sequencing data"></p>
+<p>In <strong>paired-end</strong> sequencing (left) the actual ends of rather short DNA molecules (less than 1kb) are determined, while for <strong>mate-pair</strong> sequencing (right) the ends of long molecules are joined and prepared in special sequencing libraries. In these mate pair protocols, the ends of long, size-selected molecules are connected with an internal adapter sequence (i.e. linker, yellow) in a circularization reaction. The circular molecule is then processed using restriction enzymes or fragmentation. Fragments are enriched for the linker and outer library adapters are added around the two combined molecule ends. The internal adapter can then be used as a second priming site for an additional sequencing reaction in the same orientation or sequencing can be performed from the second adapter, from the reverse strand. (From “Understanding and improving high-throughput sequencing data production and analysis”, Ph.D. dissertation by Martin Kircher)</p>
+<p><strong>Thus in both cases (paired-end and mate-pair) a single physical piece of DNA (or RNA in the case of RNA-seq) is sequenced from two ends and so generates two reads</strong>. These can be represented as separate files (two FASTQ files with first and second reads) or a single file were reads for each end are interleaved (discussed later). Each of our data sets is a pair of FASTQ files, with each data set having a file for "Forward" read and "Reverse" reads. </p>
+<p>For example, the first two reads of the <code>SRR11954102</code> data set are: </p>
+<p><strong>Forward</strong> </p>
+<pre><code>@SRR11954102.1 1 length=101
+ACGGGGGGGCTTACCATCTGGCCCCAGTGCTGCAATGATACCGCGAGACCCACGCTCACCGGCTCCAGATTTATCAGCAATAAACCAGCCAGCCGGAAGGG
++SRR11954102.1 1 length=101
+FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+@SRR11954102.2 2 length=101
+GCATTAAGCGCGGCGGGTGTGGTGGTTACGCGCAGCGTGACCGCTACACTTGCCAGCGCCCTAGCGCCCGCTCCTTTCGCTGTCTTCCCTTCCTTTCTCGC
++SRR11954102.2 2 length=101
+FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF,FFFFFFFFFFFFFFFFFFF
+</code></pre>
+<p>{: .output}</p>
+<p><strong>Reverse</strong> </p>
+<pre><code>@SRR11954102.1 1 length=101
+AACTCGCCTTGATCGTTGGGAACCGGAGCTGAATGAAGCCATACCAAACGACGAGCGTGACACCACGATGCCTGTAGCAATGGCAACAACGTTGCGCAAAC
++SRR11954102.1 1 length=101
+FFFFFFF:FFFFFFFFFFFFF:FFFFFFFFFFFFF:FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF:FFFFFFFFF
+@SRR11954102.2 2 length=101
+CCCTTTAGGGTTCCGATTTAGTGCTTTACGGGGAAAGCCGGCGAACGTGGCGAGAAAGGAAGGGAAGAAAGCGAAAGGAGCGGGCGCTAGGGCGCTGGCAA
++SRR11954102.2 2 length=101
+FF:FFFFFFFFFFFFFFFFFF:FFFFFFFFF:FFFF:FFFFFFFFFFF:FFFFFFFFFFFFFFFFFF:FFFFFFFFFFFFFFFFFFFFFF:FFFFFFFFFF
+</code></pre>
+<p>{: .output}</p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.92b07e13.min.js"></script>
+      
+    
+  </body>
+</html>
